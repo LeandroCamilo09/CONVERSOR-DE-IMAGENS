@@ -9,6 +9,7 @@ def main(page: ft.Page):
      page.overlay.append(arquivos)
      page.overlay.append(arquivos_salvos)
      page.window.center()
+     page.title = "Conversor de imagens_1.0"
 
      page.add(programa)
 
