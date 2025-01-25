@@ -25,7 +25,7 @@
 - JPG
 - BMP
 - TIFF
-- RAW
+- 'RAW'
 - WEBP
 
 ### Como funciona:
