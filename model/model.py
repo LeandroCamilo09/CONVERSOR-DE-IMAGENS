@@ -1,5 +1,6 @@
 from PIL import Image
 import flet as ft
+import os
      
 def pick_files_result(event,files):
           global selected_path
@@ -11,32 +12,39 @@ def pick_files_result(event,files):
 
           files.value = (", ".join(map(lambda f: f.name, event.files)) if event.files else "Cancelled!").split(",")
           files.update()
-
           selected_path["nome"]=(",".join(map(lambda f: f.name, event.files))).split(",")
           selected_path["caminho"]=",".join(map(lambda f: f.path, event.files)).split(",")
-
 def salvar_imagens(event,selected_format,load):
-          try:
-               
-               path = event.path if event.path else "Cancelled!"
-               
-               for nome, caminho in zip(selected_path["nome"],selected_path["caminho"]):
-                    
-                    with Image.open(caminho) as img:
-                         # Verificar o modo da imagem e converter se necessário
-                         if img.mode == "RGBA" and selected_format.upper() in ["JPEG","JPG"]:
-                              img = img.convert("RGB")  # Remove transparência
-
-                         imagem=Conversor(nome,caminho,selected_format,path)
-                         imagem.converter_imagem()
-
-                    print(f"Nome: {str(nome).split('.')[0]} \nCaminho: {caminho} \nTipo de arquivo: {selected_format} \nNovo caminho: {path}\\{nome}.{selected_format} \n")
-                    print("================")
-               load.value="CONCLUIDO!"
+          if selected_format == None:
+               load.value="Você precisa selecionar um formato de arquivo!"
                load.update()
-          except Exception as img_error:
-                print(f"Erro ao processar imagem: {img_error}")
+          else:
+               load.value="Convertendo imagens, por favor aguarde!"
+               load.update()
+               try:
+                    global pasta_caminho
+                    path = event.path if event.path else "Cancelled!"
+                    pasta_caminho=path
+                    for nome, caminho in zip(selected_path["nome"],selected_path["caminho"]):
+                         
+                         with Image.open(caminho) as img:
+                              # Verificar o modo da imagem e converter se necessário
+                              if img.mode == "RGBA" and selected_format.upper() in ["JPEG","JPG"]:
+                                   img = img.convert("RGB")  # Remove transparência
+
+                              imagem=Conversor(nome,caminho,selected_format,path)
+                              imagem.converter_imagem()
+
+                         print(f"Nome: {str(nome).split('.')[0]} \nCaminho: {caminho} \nTipo de arquivo: {selected_format} \nNovo caminho: {path}\\{nome}.{selected_format} \n")
+                         print("================")
+                    load.value="CONCLUIDO!"
+                    load.update()
+               except Exception as img_error:
+                    print(f"Erro ao processar imagem: {img_error}")
                
+
+def abrir_pasta(event):
+      os.startfile(pasta_caminho)
 
 class Conversor():
      def __init__(self,input_name,input_path,output_format,output_path):
