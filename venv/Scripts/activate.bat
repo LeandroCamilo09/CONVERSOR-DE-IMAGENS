@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=B:\Meu_repositório\CONVERSOR_DE_IMAGENS\venv"
+set "VIRTUAL_ENV=B:\Meu_repositorio\CONVERSOR_DE_IMAGENS\venv"
 
 if not defined PROMPT set PROMPT=$P$G
 
