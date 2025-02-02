@@ -25,6 +25,7 @@
 - JPG
 - BMP
 - TIFF
+- TIF
 - RAW
 - WEBP
 
@@ -36,6 +37,11 @@
 
 - Python
 - Flet
+
+## Requisitos:
+
+- Windows
+- Descktop, notebook e outros, exceto dispositivos mobile.
 
 ## Equipe:
 
