@@ -18,22 +18,35 @@ selected_format = ft.Dropdown(label="Formato",
                                        ft.dropdown.Option("TIF"),
                                        ft.dropdown.Option("RAW"),
                                        ft.dropdown.Option("WEBP"),
-                                       ],width=120, border_color=cor_red, label_style=ft.TextStyle(weight=ft.FontWeight.BOLD))
+                                       ], width=160, border_color=cor_red, label_style=ft.TextStyle(weight=ft.FontWeight.BOLD,size=16
+                                                                                                   ))
 
 
 lounding=ft.Text("...")
-# if lambda e: salvar_imagens:
-#      lounding.value = "Concluido !!"
 
 arquivos=ft.FilePicker(on_result=lambda e: pick_files_result(event=e,files=selected_files))
 
-arquivos_salvos= ft.FilePicker(on_result=lambda e: salvar_imagens(event=e,selected_format=selected_format.value, load=lounding))
+pb= ft.ProgressBar(width=400,value=0, visible=False)
 
 btn_arquivos=ft.ElevatedButton("Procurar imagem", icon="IMAGE", on_click=lambda _:arquivos.pick_files(allow_multiple=True, file_type=ft.FilePickerFileType.CUSTOM, allowed_extensions=["png","jpeg","jpg","bmp","tiff", "tif", "raw", "webp"]))
 
 btn_abrir_pasta = ft.ElevatedButton("Abrir Pasta", icon="FOLDER", on_click= lambda e: abrir_pasta(e))
 
-btn_save=ft.ElevatedButton("Salvar imagens", icon="SAVE", on_click=lambda _:arquivos_salvos.get_directory_path())
 
 container_btn_format=ft.Row([btn_arquivos,selected_format], alignment="center")
-programa = ft.Column([title,container_btn_format,container_selected_files,lounding,btn_save,btn_abrir_pasta], horizontal_alignment= "CENTER")
+
+class Arquivos_salvos(ft.FilePicker):
+     def __init__(self,aplicativo):
+          super().__init__()
+          self.aplicativo=aplicativo
+          self.on_result=lambda e: salvar_imagens(event=e,selected_format=selected_format.value, load=lounding,pb=pb, app=self.aplicativo)
+     
+
+
+def programa(arq):
+
+     btn_save=ft.ElevatedButton("Salvar imagens", icon="SAVE", on_click=lambda _:arq.get_directory_path())
+
+     programa = ft.Column([title,container_btn_format,container_selected_files,lounding,pb,btn_save,btn_abrir_pasta], horizontal_alignment= "CENTER")
+     
+     return programa
